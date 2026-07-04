@@ -1,0 +1,339 @@
+/* Fonts are loaded by includes/head_meta.php via <link>, not @import here —
+   see that file for why. */
+
+/* ══════════════════════════════════════════════════════════════
+   Gerbang Inbox — design tokens
+   A "gateway" is the idea: one calm portal in front of two very
+   different channels (WhatsApp green, Telegram blue). The product
+   itself stays neutral — ink, paper, and a single brass accent —
+   so the channel colors always read as signal, not decoration.
+   ══════════════════════════════════════════════════════════════ */
+:root {
+  --ink:        #14161C;
+  --ink-soft:   #565C6A;
+  --ink-faint:  #9AA0AC;
+  --line:       #E4E5EA;
+  --line-soft:  #EDEEF2;
+  --paper:      #EFEFF2;
+  --surface:    #FFFFFF;
+
+  --brass:      #A9762F;
+  --brass-dark: #875E24;
+  --brass-tint: #F6EEDE;
+
+  --whatsapp:   #1FA855;
+  --telegram:   #229ED9;
+
+  --danger:      #B3271E;
+  --danger-tint: #FBEAE8;
+  --danger-line: #F2CBC7;
+  --success:      #1D7A46;
+  --success-tint: #E7F5EC;
+  --success-line: #C9E9D3;
+
+  --shadow-sm: 0 1px 2px rgba(20, 22, 28, 0.06);
+  --shadow-md: 0 8px 24px rgba(20, 22, 28, 0.08);
+  --shadow-lg: 0 16px 48px rgba(20, 22, 28, 0.14);
+
+  --font-display: 'Sora', sans-serif;
+  --font-body: 'IBM Plex Sans', sans-serif;
+  --font-mono: 'IBM Plex Mono', monospace;
+
+  --radius-sm: 8px;
+  --radius-md: 12px;
+  --radius-lg: 18px;
+}
+
+* { box-sizing: border-box; }
+html, body { margin: 0; padding: 0; height: 100%; background: var(--paper); }
+body.gi-root, .gi-root * { font-family: var(--font-body); color: var(--ink); }
+.gi-display { font-family: var(--font-display); }
+.gi-mono { font-family: var(--font-mono); }
+
+::-webkit-scrollbar { width: 7px; height: 7px; }
+::-webkit-scrollbar-thumb { background: #D3D5DC; border-radius: 999px; }
+::-webkit-scrollbar-thumb:hover { background: #BCBFC8; }
+::-webkit-scrollbar-track { background: transparent; }
+
+:focus-visible { outline: 2px solid var(--brass); outline-offset: 2px; border-radius: 4px; }
+
+@keyframes gi-pulse { 0%, 100% { opacity: 1; } 50% { opacity: .45; } }
+@keyframes gi-in { from { opacity: 0; transform: translateY(5px); } to { opacity: 1; transform: translateY(0); } }
+@keyframes gi-rail-glow { 0%, 100% { opacity: .55; } 50% { opacity: 1; } }
+@media (prefers-reduced-motion: reduce) {
+  * { animation-duration: .001s !important; transition-duration: .001s !important; }
+}
+
+button { font-family: inherit; }
+
+/* ── Gate mark (brand glyph used across every screen) ─────────── */
+.gi-gate-mark { display: inline-flex; align-items: center; justify-content: center; flex-shrink: 0; color: var(--brass); }
+.gi-gate-mark svg { display: block; }
+
+/* ── App shell ───────────────────────────────────────────────── */
+.gi-shell { height: 100vh; width: 100%; display: flex; flex-direction: column; overflow: hidden; }
+
+.gi-topbar {
+  display: flex; align-items: center; justify-content: space-between;
+  height: 56px; min-height: 56px; padding: 0 18px 0 20px;
+  background: var(--ink); color: #E7E8EC;
+  box-shadow: var(--shadow-sm);
+  z-index: 5;
+}
+.gi-topbar-brand { display: flex; align-items: center; gap: 10px; }
+.gi-topbar-brand .gi-gate-mark { color: var(--brass); background: rgba(169,118,47,.18); width: 30px; height: 30px; border-radius: 8px; }
+.gi-topbar-name { font-size: 15px; font-weight: 600; letter-spacing: -.1px; line-height: 1.1; }
+.gi-topbar-tagline { font-size: 11px; color: #9A9EAA; line-height: 1.1; margin-top: 2px; }
+.gi-topbar-mid { display: flex; align-items: center; gap: 8px; }
+.gi-topbar-actions { display: flex; align-items: center; gap: 6px; flex-shrink: 0; }
+.gi-agent-name { font-size: 12.5px; font-weight: 500; color: #C4C7D0; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; max-width: 160px; padding-right: 4px; }
+.gi-logout-btn, .gi-manage-btn {
+  background: transparent; border: 1px solid rgba(231,232,236,.16); color: #D6D8DE;
+  font-size: 12px; font-weight: 600; cursor: pointer; padding: 6px 12px; border-radius: 7px;
+  white-space: nowrap; transition: background .15s, border-color .15s, color .15s;
+}
+.gi-logout-btn:hover, .gi-manage-btn:hover { color: #FFFFFF; background: rgba(255,255,255,.08); border-color: rgba(231,232,236,.3); }
+
+.gi-body { flex: 1; display: flex; overflow: hidden; min-height: 0; }
+
+/* ── Sidebar ─────────────────────────────────────────────────── */
+.gi-sidebar { width: 340px; min-width: 300px; border-right: 1px solid var(--line); background: var(--surface); display: flex; flex-direction: column; }
+
+.gi-status-bar { display: flex; gap: 8px; padding: 12px 18px; border-bottom: 1px solid var(--line-soft); }
+.gi-status-pill { display: flex; align-items: center; gap: 6px; font-size: 11.5px; font-weight: 500; padding: 5px 10px 5px 8px; border-radius: 999px; background: var(--paper); border: 1px solid var(--line); cursor: default; color: var(--ink-soft); }
+.gi-status-dot { width: 6px; height: 6px; border-radius: 50%; flex-shrink: 0; }
+
+.gi-sidebar-toolbar { padding: 14px 18px 12px; border-bottom: 1px solid var(--line-soft); }
+.gi-search { position: relative; margin-bottom: 10px; }
+.gi-search input { width: 100%; background: var(--paper); border: 1px solid var(--line); border-radius: var(--radius-sm); padding: 9px 12px 9px 34px; color: var(--ink); font-size: 13.5px; outline: none; transition: border-color .15s, background .15s; }
+.gi-search input::placeholder { color: var(--ink-faint); }
+.gi-search input:focus { border-color: var(--brass); background: var(--surface); }
+.gi-search svg { position: absolute; left: 11px; top: 50%; transform: translateY(-50%); pointer-events: none; }
+
+.gi-filters { display: flex; gap: 6px; }
+.gi-filter-btn { flex: 1; padding: 7px 8px; border-radius: 7px; font-size: 12px; font-weight: 600; cursor: pointer; border: 1px solid var(--line); background: var(--surface); color: var(--ink-soft); transition: all .15s; }
+.gi-filter-btn:hover { border-color: #D5D7DE; }
+.gi-filter-btn.active { border-color: var(--accent); background: color-mix(in srgb, var(--accent) 12%, white); color: color-mix(in srgb, var(--accent) 65%, black); }
+
+.gi-conv-list { flex: 1; overflow-y: auto; padding: 8px; }
+.gi-conv-list-empty { color: var(--ink-faint); font-size: 12.5px; padding: 32px 14px; text-align: center; line-height: 1.6; }
+.gi-conv-item { width: 100%; display: flex; gap: 11px; align-items: flex-start; text-align: left; padding: 10px; border-radius: var(--radius-sm); border: none; cursor: pointer; margin-bottom: 2px; background: transparent; transition: background .12s; }
+.gi-conv-item.active { background: var(--brass-tint); }
+.gi-conv-item:hover:not(.active) { background: var(--paper); }
+.gi-conv-top { display: flex; justify-content: space-between; align-items: baseline; gap: 8px; }
+.gi-conv-name { font-size: 13.5px; font-weight: 600; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.gi-conv-time { font-size: 10.5px; color: var(--ink-faint); font-family: var(--font-mono); flex-shrink: 0; }
+.gi-conv-time.unread { color: var(--brass-dark); font-weight: 600; }
+.gi-conv-bottom { display: flex; justify-content: space-between; align-items: center; margin-top: 3px; gap: 8px; }
+.gi-conv-preview { color: var(--ink-soft); font-size: 12px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; max-width: 190px; }
+.gi-badge { background: var(--brass); color: #FFFFFF; font-size: 10.5px; font-weight: 700; border-radius: 999px; min-width: 18px; height: 18px; display: flex; align-items: center; justify-content: center; padding: 0 5px; flex-shrink: 0; }
+
+.gi-avatar { border-radius: 50%; display: flex; align-items: center; justify-content: center; flex-shrink: 0; box-shadow: inset 0 0 0 1px rgba(255,255,255,.18), 0 1px 2px rgba(20,22,28,.12); }
+.gi-avatar span { font-weight: 700; color: #FFFFFF; }
+.gi-avatar-wrap { position: relative; flex-shrink: 0; }
+.gi-channel-badge { position: absolute; bottom: -3px; right: -3px; border-radius: 50%; display: flex; align-items: center; justify-content: center; border: 2px solid var(--surface); box-shadow: var(--shadow-sm); }
+
+/* ── Date dividers & read-receipt ticks (chat realism) ── */
+.gi-date-divider { display: flex; align-items: center; justify-content: center; margin: 6px 0 4px; }
+.gi-date-divider span { font-family: var(--font-mono); font-size: 10.5px; font-weight: 600; letter-spacing: .3px; color: var(--ink-faint); background: var(--surface); border: 1px solid var(--line); padding: 4px 12px; border-radius: 999px; }
+.gi-tick { display: inline-flex; }
+.gi-tick.read { color: #6FD3FF; }
+.gi-tick.sent { color: rgba(255,255,255,.65); }
+
+/* ── Gate rail signature ─────────────────────────────────────── */
+.gi-gate-rail { width: 3px; flex-shrink: 0; background: linear-gradient(180deg, transparent 4%, var(--accent, var(--brass)) 50%, transparent 96%); position: relative; }
+.gi-gate-rail::after {
+  content: ""; position: absolute; inset: 0; background: inherit; filter: blur(5px);
+  animation: gi-rail-glow 3.2s ease-in-out infinite;
+}
+
+/* ── Chat pane ───────────────────────────────────────────────── */
+.gi-chat { flex: 1; display: flex; flex-direction: column; background: var(--paper); min-width: 0; }
+.gi-chat-header { display: flex; align-items: center; gap: 12px; padding: 13px 20px; border-bottom: 1px solid var(--line); background: var(--surface); }
+.gi-chat-name { font-size: 14.5px; font-weight: 600; }
+.gi-chat-sub { display: flex; align-items: center; gap: 6px; margin-top: 1px; color: var(--ink-soft); font-size: 12px; }
+.gi-online-dot { width: 6px; height: 6px; border-radius: 50%; flex-shrink: 0; }
+.gi-back-btn { display: none; background: none; border: none; cursor: pointer; color: var(--ink-soft); padding: 4px; margin: -4px 0 -4px -4px; border-radius: 6px; }
+.gi-back-btn:hover { background: var(--paper); }
+
+.gi-messages { flex: 1; overflow-y: auto; padding: 20px 22px; display: flex; flex-direction: column; gap: 10px; }
+.gi-msg-row { display: flex; }
+.gi-msg-row.mine { justify-content: flex-end; }
+.gi-bubble { max-width: 66%; padding: 9px 13px; border-radius: 14px 14px 14px 4px; background: var(--surface); border: 1px solid var(--line); font-size: 13.5px; line-height: 1.5; animation: gi-in .18s ease-out; box-shadow: var(--shadow-sm); }
+.gi-msg-row.mine .gi-bubble { border-radius: 14px 14px 4px 14px; background: var(--accent); border-color: var(--accent); color: #FFFFFF; }
+.gi-meta { display: flex; justify-content: flex-end; align-items: center; gap: 4px; margin-top: 4px; opacity: .8; font-size: 10px; font-family: var(--font-mono); }
+
+.gi-composer { padding: 13px 18px; border-top: 1px solid var(--line); display: flex; align-items: center; gap: 10px; background: var(--surface); }
+.gi-composer input { flex: 1; background: var(--paper); border: 1px solid var(--line); border-radius: 20px; padding: 10px 16px; color: var(--ink); font-size: 13.5px; outline: none; transition: border-color .15s, background .15s; }
+.gi-composer input::placeholder { color: var(--ink-faint); }
+.gi-composer input:focus { border-color: var(--brass); background: var(--surface); }
+.gi-send-btn { width: 38px; height: 38px; border-radius: 50%; border: none; cursor: pointer; flex-shrink: 0; background: var(--accent, var(--brass)); display: flex; align-items: center; justify-content: center; transition: filter .15s, transform .1s; }
+.gi-send-btn:hover { filter: brightness(1.08); }
+.gi-send-btn:active { transform: scale(.94); }
+.gi-icon-btn { cursor: pointer; flex-shrink: 0; color: var(--ink-faint); display: flex; transition: color .15s; }
+.gi-icon-btn:hover { color: var(--ink-soft); }
+
+.gi-empty { flex: 1; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 10px; color: var(--ink-faint); font-size: 13px; text-align: center; padding: 20px; }
+.gi-empty .gi-gate-mark { opacity: .5; }
+
+/* ── Detail pane ─────────────────────────────────────────────── */
+.gi-detail { width: 250px; border-left: 1px solid var(--line); background: var(--surface); padding: 26px 20px; overflow-y: auto; }
+.gi-detail-head { display: flex; flex-direction: column; align-items: center; text-align: center; margin-bottom: 22px; }
+.gi-detail-name { font-size: 15px; font-weight: 700; margin-top: 12px; }
+.gi-detail-handle { color: var(--ink-faint); font-size: 12px; margin-top: 2px; font-family: var(--font-mono); }
+.gi-detail-section { display: flex; flex-direction: column; gap: 16px; }
+.gi-channel-pill { border-radius: var(--radius-sm); padding: 10px 12px; display: flex; align-items: center; gap: 7px; font-size: 12px; font-weight: 600; }
+.gi-label-title { color: var(--ink-faint); font-size: 10.5px; font-weight: 600; text-transform: uppercase; letter-spacing: .6px; margin-bottom: 7px; font-family: var(--font-mono); }
+.gi-tag-chip { display: inline-flex; align-items: center; gap: 5px; background: var(--paper); font-size: 12px; padding: 5px 10px; border-radius: var(--radius-sm); font-weight: 500; border: 1px solid var(--line); }
+.gi-detail-meta-row { display: flex; align-items: center; gap: 6px; color: var(--ink-soft); font-size: 12.5px; }
+
+@media (max-width: 980px) {
+  .gi-detail { display: none !important; }
+}
+@media (max-width: 700px) {
+  .gi-sidebar.hide-mobile { display: none !important; }
+  .gi-chat.hide-mobile { display: none !important; }
+  .gi-sidebar, .gi-chat { width: 100% !important; min-width: 0 !important; }
+  .gi-gate-rail { display: none !important; }
+  .gi-back-btn { display: flex !important; }
+  .gi-topbar-tagline { display: none; }
+  .gi-agent-name { display: none; }
+}
+
+/* ── Auth screen (login) ───────────────────────────────────────
+   The card reads as a small gateway: an arched top edge and a
+   soft brass glow, set against a deep ink field. */
+.gi-auth-screen {
+  min-height: 100vh; width: 100%; display: flex; align-items: center; justify-content: center;
+  padding: 24px; background:
+    radial-gradient(560px 420px at 50% -8%, rgba(169,118,47,.35), transparent 65%),
+    var(--ink);
+}
+.gi-auth-card {
+  width: 100%; max-width: 360px; background: var(--surface);
+  border-radius: 120px 120px var(--radius-lg) var(--radius-lg);
+  padding: 46px 30px 30px; display: flex; flex-direction: column;
+  box-shadow: var(--shadow-lg);
+  position: relative;
+}
+.gi-auth-arch {
+  width: 56px; height: 56px; border-radius: 50%; background: var(--brass-tint);
+  display: flex; align-items: center; justify-content: center; margin: 0 auto 16px;
+  color: var(--brass);
+}
+.gi-auth-title { font-size: 20px; font-weight: 700; text-align: center; margin: 0; letter-spacing: -.2px; }
+.gi-auth-tagline { color: var(--ink-soft); font-size: 12.5px; margin: 5px 0 22px; text-align: center; }
+.gi-login-label { font-size: 12px; font-weight: 600; color: var(--ink-soft); margin: 12px 0 6px; }
+.gi-login-input { width: 100%; background: var(--paper); border: 1px solid var(--line); border-radius: var(--radius-sm); padding: 10px 12px; color: var(--ink); font-size: 13.5px; outline: none; transition: border-color .15s, background .15s; }
+.gi-login-input::placeholder { color: var(--ink-faint); }
+.gi-login-input:focus { border-color: var(--brass); background: var(--surface); }
+.gi-login-btn { margin-top: 22px; background: var(--brass); color: #FFFFFF; border: none; border-radius: var(--radius-sm); padding: 11px; font-size: 13.5px; font-weight: 700; cursor: pointer; transition: background .15s; }
+.gi-login-btn:hover { background: var(--brass-dark); }
+.gi-login-btn:disabled { opacity: .6; cursor: default; }
+.gi-login-error { min-height: 16px; margin: 12px 0 0; color: var(--danger); font-size: 12.5px; text-align: center; }
+.gi-auth-foot { text-align: center; color: rgba(231,232,236,.5); font-size: 11.5px; margin-top: 22px; letter-spacing: .2px; }
+
+/* ── Settings / user-management page ──────────────────────────
+   Shares the topbar with the dashboard so it reads as one product,
+   not a bolted-on admin screen. */
+.gi-page { min-height: 100vh; background: var(--paper); }
+.gi-page-inner { max-width: 760px; margin: 0 auto; padding: 30px 20px 60px; }
+.gi-page-eyebrow { font-family: var(--font-mono); font-size: 10.5px; font-weight: 600; letter-spacing: .8px; text-transform: uppercase; color: var(--brass-dark); margin: 0 0 4px; }
+.gi-page-title { font-size: 21px; font-weight: 700; margin: 0 0 22px; letter-spacing: -.2px; }
+.gi-back-link { display: inline-flex; align-items: center; gap: 6px; color: var(--ink-soft); font-size: 13px; font-weight: 600; text-decoration: none; transition: color .15s; }
+.gi-back-link:hover { color: var(--ink); }
+
+.gi-page-head { display: flex; align-items: flex-start; justify-content: space-between; gap: 16px; margin-bottom: 22px; }
+.gi-page-head .gi-page-title { margin-bottom: 0; }
+.gi-page-head .gi-page-eyebrow { margin-bottom: 4px; }
+
+.gi-card { background: var(--surface); border: 1px solid var(--line); border-radius: var(--radius-md); padding: 24px; margin-bottom: 20px; box-shadow: var(--shadow-sm); }
+.gi-card h2 { font-size: 15px; margin: 0 0 4px; font-family: var(--font-display); font-weight: 600; }
+.gi-card-hint { color: var(--ink-faint); font-size: 12.5px; margin: 0 0 18px; }
+
+.gi-field { margin-bottom: 14px; }
+.gi-field label { display: block; font-size: 12px; font-weight: 600; color: var(--ink-soft); margin-bottom: 5px; }
+.gi-field input { width: 100%; background: var(--paper); border: 1px solid var(--line); border-radius: var(--radius-sm); padding: 9px 11px; font-size: 13.5px; outline: none; transition: border-color .15s, background .15s; }
+.gi-field input::placeholder { color: var(--ink-faint); }
+.gi-field input:focus { border-color: var(--brass); background: var(--surface); }
+.gi-field small { display: block; color: var(--ink-faint); font-size: 11px; margin-top: 4px; }
+
+.gi-btn-primary {
+  background: var(--brass); color: #FFFFFF; border: none; border-radius: var(--radius-sm);
+  padding: 10px 18px; font-size: 13px; font-weight: 700; cursor: pointer; text-decoration: none;
+  display: inline-flex; align-items: center; transition: background .15s;
+}
+.gi-btn-primary:hover { background: var(--brass-dark); }
+.gi-btn-with-icon { gap: 7px; }
+.gi-btn-secondary { background: var(--surface); color: var(--ink-soft); border: 1px solid var(--line); border-radius: var(--radius-sm); padding: 10px 18px; font-size: 13px; font-weight: 700; cursor: pointer; text-decoration: none; display: inline-flex; align-items: center; transition: color .15s, background .15s; }
+.gi-btn-secondary:hover { color: var(--ink); background: var(--paper); }
+
+.gi-alert { border-radius: var(--radius-sm); padding: 12px 14px; font-size: 13px; margin-bottom: 18px; display: flex; align-items: center; gap: 8px; }
+.gi-alert-success { background: var(--success-tint); color: var(--success); border: 1px solid var(--success-line); }
+.gi-alert-error { background: var(--danger-tint); color: var(--danger); border: 1px solid var(--danger-line); }
+
+.gi-table-empty { color: var(--ink-faint); font-size: 13px; text-align: center; padding: 30px 10px; }
+
+.gi-user-table { width: 100%; border-collapse: collapse; }
+.gi-user-table th { text-align: left; font-size: 10.5px; font-family: var(--font-mono); text-transform: uppercase; letter-spacing: .5px; color: var(--ink-faint); font-weight: 600; padding: 0 10px 10px; border-bottom: 1px solid var(--line); }
+.gi-user-table td { padding: 12px 10px; font-size: 13.5px; border-bottom: 1px solid var(--line-soft); vertical-align: middle; }
+.gi-user-table tr:last-child td { border-bottom: none; }
+.gi-user-table tr:hover td { background: var(--paper); }
+.gi-col-muted { color: var(--ink-soft); }
+.gi-col-action { text-align: right; white-space: nowrap; }
+
+.gi-user-cell { display: flex; align-items: center; gap: 11px; }
+.gi-avatar {
+  width: 34px; height: 34px; border-radius: 50%; flex-shrink: 0;
+  background: var(--brass-tint); color: var(--brass-dark);
+  display: flex; align-items: center; justify-content: center;
+  font-size: 12px; font-weight: 700; font-family: var(--font-display);
+}
+.gi-user-cell-name { font-weight: 600; display: flex; align-items: center; }
+.gi-user-cell-username { color: var(--ink-faint); font-size: 12px; margin-top: 1px; }
+
+.gi-edit-link { color: var(--brass-dark); font-weight: 600; text-decoration: none; font-size: 12.5px; padding: 6px 12px; border-radius: 6px; border: 1px solid var(--line); transition: background .15s, border-color .15s; }
+.gi-edit-link:hover { background: var(--brass-tint); border-color: var(--brass-tint); }
+.gi-you-pill { background: var(--paper); color: var(--ink-soft); font-size: 10px; font-weight: 700; padding: 2px 8px; border-radius: 999px; margin-left: 6px; letter-spacing: .2px; }
+.gi-msg-agent { font-size: 10.5px; color: var(--ink-soft); margin-bottom: 2px; font-weight: 600; }
+.gi-msg-row.mine .gi-msg-agent { color: rgba(255,255,255,.85); }
+
+/* ── Slide-over panel (add / edit user) ────────────────────────
+   Editing never happens inline in the page flow — it opens in its
+   own panel from the right, so the user list underneath never
+   jumps around or gets pushed down by a form. ─────────────────── */
+.gi-panel-overlay {
+  position: fixed; inset: 0; background: rgba(20, 22, 28, .38);
+  opacity: 0; pointer-events: none; transition: opacity .2s ease;
+  z-index: 20;
+}
+.gi-panel-overlay.open { opacity: 1; pointer-events: auto; }
+
+.gi-panel {
+  position: fixed; top: 0; right: 0; bottom: 0; width: 420px; max-width: 92vw;
+  background: var(--surface); box-shadow: var(--shadow-lg);
+  padding: 24px 26px 26px; overflow-y: auto;
+  transform: translateX(100%); transition: transform .24s cubic-bezier(.32,.72,.35,1);
+  z-index: 21; display: flex; flex-direction: column;
+  border-left: 1px solid var(--line);
+}
+.gi-panel.open { transform: translateX(0); }
+
+.gi-panel-head { display: flex; align-items: flex-start; justify-content: space-between; gap: 12px; }
+.gi-panel-head h2 { font-size: 17px; margin: 0; font-family: var(--font-display); font-weight: 600; }
+.gi-panel-close {
+  width: 30px; height: 30px; border-radius: 8px; flex-shrink: 0;
+  display: flex; align-items: center; justify-content: center;
+  color: var(--ink-soft); text-decoration: none; transition: background .15s, color .15s;
+}
+.gi-panel-close:hover { background: var(--paper); color: var(--ink); }
+.gi-panel-hint { margin-top: 6px; margin-bottom: 20px; }
+.gi-panel-form { display: flex; flex-direction: column; flex: 1; }
+.gi-panel-actions { display: flex; gap: 8px; margin-top: 8px; padding-top: 18px; border-top: 1px solid var(--line-soft); justify-content: flex-end; }
+.gi-panel-actions .gi-btn-primary, .gi-panel-actions .gi-btn-secondary { flex: 0 0 auto; }
+
+@media (max-width: 560px) {
+  .gi-page-head { flex-direction: column; align-items: stretch; }
+  .gi-page-head .gi-btn-primary { justify-content: center; }
+  .gi-panel { width: 100%; max-width: 100%; }
+}
